@@ -1,11 +1,9 @@
 import type { SelectOption } from '@models/SelectOptions';
-import Search from '@mui/icons-material/Search';
-import type { SelectChangeEvent } from '@mui/material';
+import type { SelectChangeEvent, SxProps, Theme } from '@mui/material';
 import {
   Box,
   Checkbox,
   FormControl,
-  InputAdornment,
   InputLabel,
   ListItemText,
   MenuItem,
@@ -13,95 +11,91 @@ import {
   Select,
 } from '@mui/material';
 import Chip from '@mui/material/Chip';
+import React, { useMemo } from 'react';
 
 interface MultiSelectProps {
+  /** Label text for the select list field. */
   label: string;
+  /** Unique base identifier for the input fields and ARIA associations. */
   id: string;
+  /** Array of option configuration objects containing unique keys and values. */
   options: SelectOption[];
+  /** Controlled array of currently chosen option keys. */
   selectedValues: string[];
+  /** Callback triggered when items are selected or deselected. */
   onChange: (newValue: string[]) => void;
+  /** Optional MUI 'sx' styles applied directly to the root container. */
+  sx?: SxProps<Theme>;
 }
 
 /**
- * Renders a multi-select checkbox list. Selected items are passed to the callback function as a string array.
- * @param {MultiSelectProps} props
- * @param {function} props.label - Label of select list
- * @param {function} props.id - ID of select list
- * @param {function} props.options - Object array of select list options
- * @param {function} props.selectedValues - String array of selected values
- * @param {function} props.onChange - Callback function to handle selections
+ * Renders an optimized multi-select checkbox dropdown menu. Selected items are displayed as removable Chips.
  * @example
  * const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
- *
- * const handleChange = (newValue: string[]) => {
- *   console.log('Selected:', newValue);
- *   setSelectedOptions(newValue);
- * };
- *
- * const myOptions: SelectOption[] = [ { key: '1', value: 'Item 1' }, { key: '2', value: 'Item 2', disabled: true } ];
- *
+ * const myOptions = [ { key: '1', value: 'Item 1' }, { key: '2', value: 'Item 2', disabled: true } ];
  * <MultiSelect
- *   label={'My Options'}
- *   id={'my-options'}
- *   options={myOptions}
- *   selectedValues={selectedOptions}
- *   onChange={handleChange}
+ *  label="My Options"
+ *  id="my-options"
+ *  options={myOptions}
+ *  selectedValues={selectedOptions}
+ *  onChange={(val) => setSelectedOptions(val)}
  * />
  */
-function MultiSelect({ label, id, options, selectedValues, onChange }: MultiSelectProps) {
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+export const MultiSelect = React.memo(function MultiSelect({
+  label,
+  id,
+  options,
+  selectedValues,
+  onChange,
+  sx,
+}: MultiSelectProps) {
+  const optionsMap = useMemo(() => {
+    return new Map<string, string>(options.map((opt) => [opt.key, opt.value]));
+  }, [options]);
+
+  const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
+
+  const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
     const {
       target: { value },
     } = event;
-    // value can be a string when autofill concatenates, so handle both cases
-    const next = typeof value === 'string' ? value.split(',') : (value as string[]);
-    onChange(next);
-  };
 
-  const getTextByValue = (key: string) => {
-    return options.find((item) => item.key === key)?.value ?? '';
+    const nextValues = typeof value === 'string' ? value.split(',') : value;
+    onChange(nextValues);
   };
 
   return (
-    <FormControl fullWidth={true}>
+    <FormControl fullWidth={true} sx={sx} size='small'>
       <InputLabel id={`${id}-multiselect-label`}>{label}</InputLabel>
       <Select
         labelId={`${id}-multiselect-label`}
         id={`${id}-multiselect`}
-        data-testid={'multiselect'}
-        value={selectedValues as string[]}
-        size={'small'}
-        sx={{ paddingLeft: 1 }}
+        data-testid='multiselect'
+        value={selectedValues}
         multiple
         onChange={handleChange}
-        input={
-          <OutlinedInput
-            label={label}
-            startAdornment={
-              <InputAdornment position={'start'}>
-                <Search />
-              </InputAdornment>
-            }
-            sx={{ display: 'flex', alignItems: 'center' }}
-          />
-        }
-        renderValue={(selectedValues: readonly string[]) => (
+        input={<OutlinedInput label={label} />}
+        renderValue={(selected) => (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {selectedValues.map((value) => (
-              <Chip key={`${id}-${value}-multiselect-chip`} label={getTextByValue(value)} />
+            {selected.map((value) => (
+              <Chip
+                key={`${id}-${value}-chip`}
+                size='small'
+                label={optionsMap.get(value) ?? value}
+              />
             ))}
           </Box>
         )}
       >
         {options.map(({ key, value, disabled = false }) => (
-          <MenuItem key={`${id}-${key}-multiselect-item`} value={key} disabled={disabled}>
-            <Checkbox checked={selectedValues.indexOf(key) > -1} />
+          <MenuItem key={`${id}-${key}-item`} value={key} disabled={disabled}>
+            <Checkbox checked={selectedSet.has(key)} size='small' />
             <ListItemText primary={value} />
           </MenuItem>
         ))}
       </Select>
     </FormControl>
   );
-}
+});
 
 export default MultiSelect;
