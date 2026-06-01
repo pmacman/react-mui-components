@@ -30,9 +30,15 @@
     /* Performance */
     "skipLibCheck": true,
 
-    /* Paths (Deterministic, Workspace-Root Relative) */
+    /* Path Aliases (Relative to project root, removing baseUrl friction) */
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@models/*": ["./src/types/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@services/*": ["./src/services/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src"]
