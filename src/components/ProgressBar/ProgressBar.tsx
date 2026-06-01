@@ -18,8 +18,20 @@ export type ProgressBarProps = {
   thickness?: number;
 } & Omit<BoxProps, 'children'>;
 
-const DEFAULT_PROGRESS_COLOR = '#008000'; // green
-const DEFAULT_TRACK_COLOR = '#b7b7b7'; // gray
+const DEFAULT_PROGRESS_COLOR = 'success.main';
+const DEFAULT_TRACK_COLOR = 'grey.300';
+
+function resolveThemeColor(theme: Theme, color: string): string {
+  const value = color.split('.').reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === 'object' && key in acc) {
+      return (acc as Record<string, unknown>)[key];
+    }
+
+    return undefined;
+  }, theme.palette);
+
+  return typeof value === 'string' ? value : color;
+}
 
 /**
  * Renders a linear progress indicator with an optional centered text label.
@@ -60,28 +72,42 @@ export const ProgressBar = React.memo(
   ) {
     const theme = useTheme();
 
-    // Determine readable text color based on progress position
-    const textColor =
-      value >= 50
-        ? theme.palette.getContrastText(progressColor)
-        : theme.palette.getContrastText(trackColor);
+    const resolvedProgressColor = resolveThemeColor(theme, progressColor);
+    const resolvedTrackColor = resolveThemeColor(theme, trackColor);
 
-    // Ensure value stays between 0 and 100 for ARIA and visual rendering
+    // Calculate exact contrast colors explicitly
+    const textOverTrack = theme.palette.getContrastText(resolvedTrackColor);
+    const textOverProgress = theme.palette.getContrastText(resolvedProgressColor);
+
     const clampedValue = Math.min(Math.max(value, 0), 100);
+
+    // Reusable text style configuration
+    const baseLabelStyle: SxProps<Theme> = {
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      pointerEvents: 'none',
+      fontSize: '1.125rem',
+      fontWeight: 'bold',
+      fontFamily: theme.typography.fontFamily,
+      ...(Array.isArray(labelSx) ? labelSx : [labelSx]),
+    };
 
     return (
       <Box
+        {...boxProps}
         ref={ref}
-        sx={{
-          position: 'relative',
-          width: '100%',
-          ...sx,
-        }}
         role='progressbar'
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
-        {...boxProps}
+        sx={{
+          position: 'relative',
+          width: '100%',
+          ...(Array.isArray(sx) ? sx : [sx]),
+        }}
       >
         <LinearProgress
           variant='determinate'
@@ -96,33 +122,36 @@ export const ProgressBar = React.memo(
             },
           }}
         />
+
         {label && (
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              pointerEvents: 'none',
-            }}
-          >
-            {/* Rendered as a 'div' to support complex elements without breaking HTML specs */}
+          <>
+            {/* LAYER 1: Default Text (Visible over the background track color) */}
             <Typography
-              variant='caption'
               component='div'
               sx={{
-                color: textColor,
-                fontSize: '1.125rem',
-                fontWeight: 'bold',
-                textShadow:
-                  value >= 50 ? '0px 1px 2px rgba(0,0,0,0.4)' : '0px 1px 2px rgba(255,255,255,0.6)',
-                ...labelSx,
+                ...baseLabelStyle,
+                color: textOverTrack,
               }}
             >
               {label}
             </Typography>
-          </Box>
+
+            {/* LAYER 2: Clipped Overlay Text (Visible strictly over the filled progress bar) */}
+            <Typography
+              component='div'
+              sx={{
+                ...baseLabelStyle,
+                color: textOverProgress,
+                // Clips this element to only show up where the progress bar exists
+                clipPath: `inset(0 ${100 - clampedValue}% 0 0)`,
+                transition: theme.transitions.create('clip-path', {
+                  duration: theme.transitions.duration.short,
+                }),
+              }}
+            >
+              {label}
+            </Typography>
+          </>
         )}
       </Box>
     );

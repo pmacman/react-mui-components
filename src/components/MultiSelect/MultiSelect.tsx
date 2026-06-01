@@ -65,7 +65,7 @@ export const MultiSelect = React.memo(function MultiSelect({
   };
 
   return (
-    <FormControl fullWidth={true} sx={sx} size='small'>
+    <FormControl fullWidth={true} size='small' sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <InputLabel id={`${id}-multiselect-label`}>{label}</InputLabel>
       <Select
         labelId={`${id}-multiselect-label`}

@@ -1,6 +1,5 @@
 import type { BoxProps } from '@mui/material';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import type { SxProps, Theme } from '@mui/material/styles';
 import React from 'react';
 
@@ -22,6 +21,7 @@ export type ProgressCircleProps = {
 } & Omit<BoxProps, 'children'>;
 
 const DEFAULT_PROGRESS_COLOR = 'success.main';
+const DEFAULT_TRACK_COLOR = 'grey.300';
 
 /**
  * Renders a circular static progress indicator with optional text label in the center.
@@ -56,7 +56,7 @@ export const ProgressCircle = React.memo(
       label,
       labelSx,
       progressColor = DEFAULT_PROGRESS_COLOR,
-      trackColor,
+      trackColor = DEFAULT_TRACK_COLOR,
       size = 50,
       thickness = 5,
       sx,
@@ -66,21 +66,20 @@ export const ProgressCircle = React.memo(
   ) {
     // Ensure value stays cleanly between 0 and 100 for visual and screen reader parity
     const clampedValue = Math.min(Math.max(value, 0), 100);
-    const defaultTrackColor = trackColor ?? grey[300];
 
     return (
       <Box
+        {...boxProps}
         ref={ref}
-        sx={{
-          position: 'relative',
-          display: 'inline-flex',
-          ...sx,
-        }}
         role='progressbar'
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
-        {...boxProps}
+        sx={{
+          position: 'relative',
+          display: 'inline-flex',
+          ...(Array.isArray(sx) ? sx : [sx]),
+        }}
       >
         {/* Track Circle */}
         <CircularProgress
@@ -89,7 +88,7 @@ export const ProgressCircle = React.memo(
           size={size}
           thickness={thickness}
           sx={{
-            color: defaultTrackColor,
+            color: trackColor,
             position: 'absolute',
             '& .MuiCircularProgress-circle': { strokeLinecap: 'round' },
           }}
@@ -124,7 +123,7 @@ export const ProgressCircle = React.memo(
                 fontSize: '1.125rem',
                 fontWeight: 'bold',
                 textShadow: '0px 0px 2px rgba(255, 255, 255, 0.8)',
-                ...labelSx,
+                ...(Array.isArray(labelSx) ? labelSx : [labelSx]),
               }}
             >
               {label}

@@ -34,6 +34,7 @@ function Home() {
               Multi-select list
             </Typography>
 
+            {/* Multi-select */}
             <MultiSelect
               label={'My Options'}
               id={'my-options'}
@@ -47,6 +48,7 @@ function Home() {
               Progress bar
             </Typography>
 
+            {/* Progress Bar */}
             <ProgressBar value={50} label={'50%'} />
           </Box>
           <Box>
@@ -54,6 +56,7 @@ function Home() {
               Progress circle
             </Typography>
 
+            {/* Progress Circle */}
             <ProgressCircle value={50} label={'50%'} size={100} />
           </Box>
         </LayoutStack>
