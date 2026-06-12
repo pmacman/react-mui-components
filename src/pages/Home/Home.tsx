@@ -6,6 +6,13 @@ import type { SelectOption } from '@models/SelectOptions';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 
+const options: SelectOption[] = [
+  { key: '1', value: 'Item 1' },
+  { key: '2', value: 'Item 2' },
+  { key: '3', value: 'Item 3', disabled: true },
+  { key: '4', value: 'Item 4' },
+];
+
 function Home() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
@@ -13,13 +20,6 @@ function Home() {
     console.log('Selected:', newValue);
     setSelectedOptions(newValue);
   };
-
-  const options: SelectOption[] = [
-    { key: '1', value: 'Item 1' },
-    { key: '2', value: 'Item 2' },
-    { key: '3', value: 'Item 3', disabled: true },
-    { key: '4', value: 'Item 4' },
-  ];
 
   return (
     <>

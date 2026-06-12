@@ -11,7 +11,7 @@ import {
   Select,
 } from '@mui/material';
 import Chip from '@mui/material/Chip';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 interface MultiSelectProps {
   /** Label text for the select list field. */
@@ -55,14 +55,14 @@ export const MultiSelect = React.memo(function MultiSelect({
 
   const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
 
-  const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
+  const handleChange = useCallback((event: SelectChangeEvent<typeof selectedValues>) => {
     const {
       target: { value },
     } = event;
 
     const nextValues = typeof value === 'string' ? value.split(',') : value;
     onChange(nextValues);
-  };
+  }, []);
 
   return (
     <FormControl fullWidth={true} size='small' sx={[...(Array.isArray(sx) ? sx : [sx])]}>
