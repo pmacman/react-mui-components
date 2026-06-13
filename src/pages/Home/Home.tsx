@@ -1,8 +1,8 @@
-import { LayoutStack } from '@components/Layout/LayoutStack';
-import MultiSelect from '@components/MultiSelect';
-import ProgressBar from '@components/ProgressBar';
-import ProgressCircle from '@components/ProgressCircle';
-import type { SelectOption } from '@models/SelectOptions';
+import { LayoutStack } from '@/components/Layout/LayoutStack';
+import MultiSelect from '@/components/MultiSelect';
+import ProgressBar from '@/components/ProgressBar';
+import ProgressCircle from '@/components/ProgressCircle';
+import type { SelectOption } from '@/types/SelectOptions';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 

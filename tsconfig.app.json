@@ -9,11 +9,13 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "noEmit": true,
+    "resolveJsonModule": true,
 
     /* Environment (Isolated strictly to the Browser) */
     "types": ["vite/client"],
 
     /* Modern TS / Bundler (Required for noEmit) */
+    "esModuleInterop": true,
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
     "useDefineForClassFields": true,
@@ -32,13 +34,7 @@
 
     /* Path Aliases (Relative to project root, removing baseUrl friction) */
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@models/*": ["./src/types/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@services/*": ["./src/services/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]
