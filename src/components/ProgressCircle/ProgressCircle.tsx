@@ -71,7 +71,7 @@ export const ProgressCircle = React.memo(
       <Box
         {...boxProps}
         ref={ref}
-        role='progressbar'
+        role="progressbar"
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
@@ -83,7 +83,7 @@ export const ProgressCircle = React.memo(
       >
         {/* Track Circle */}
         <CircularProgress
-          variant='determinate'
+          variant="determinate"
           value={100}
           size={size}
           thickness={thickness}
@@ -95,7 +95,7 @@ export const ProgressCircle = React.memo(
         />
         {/* Progress Arc */}
         <CircularProgress
-          variant='determinate'
+          variant="determinate"
           value={clampedValue}
           size={size}
           thickness={thickness}
@@ -117,7 +117,7 @@ export const ProgressCircle = React.memo(
             }}
           >
             <Typography
-              variant='caption'
+              variant="caption"
               sx={{
                 color: 'text.secondary',
                 fontSize: '1.125rem',

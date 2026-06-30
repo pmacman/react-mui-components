@@ -99,7 +99,7 @@ export const ProgressBar = React.memo(
       <Box
         {...boxProps}
         ref={ref}
-        role='progressbar'
+        role="progressbar"
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
@@ -110,7 +110,7 @@ export const ProgressBar = React.memo(
         }}
       >
         <LinearProgress
-          variant='determinate'
+          variant="determinate"
           value={clampedValue}
           sx={{
             height: thickness,
@@ -127,7 +127,7 @@ export const ProgressBar = React.memo(
           <>
             {/* LAYER 1: Default Text (Visible over the background track color) */}
             <Typography
-              component='div'
+              component="div"
               sx={{
                 ...baseLabelStyle,
                 color: textOverTrack,
@@ -138,7 +138,7 @@ export const ProgressBar = React.memo(
 
             {/* LAYER 2: Clipped Overlay Text (Visible strictly over the filled progress bar) */}
             <Typography
-              component='div'
+              component="div"
               sx={{
                 ...baseLabelStyle,
                 color: textOverProgress,

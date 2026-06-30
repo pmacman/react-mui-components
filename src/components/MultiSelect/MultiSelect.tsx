@@ -65,12 +65,12 @@ export const MultiSelect = React.memo(function MultiSelect({
   }, []);
 
   return (
-    <FormControl fullWidth={true} size='small' sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <FormControl fullWidth={true} size="small" sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <InputLabel id={`${id}-multiselect-label`}>{label}</InputLabel>
       <Select
         labelId={`${id}-multiselect-label`}
         id={`${id}-multiselect`}
-        data-testid='multiselect'
+        data-testid="multiselect"
         value={selectedValues}
         multiple
         onChange={handleChange}
@@ -80,7 +80,7 @@ export const MultiSelect = React.memo(function MultiSelect({
             {selected.map((value) => (
               <Chip
                 key={`${id}-${value}-chip`}
-                size='small'
+                size="small"
                 label={optionsMap.get(value) ?? value}
               />
             ))}
@@ -89,7 +89,7 @@ export const MultiSelect = React.memo(function MultiSelect({
       >
         {options.map(({ key, value, disabled = false }) => (
           <MenuItem key={`${id}-${key}-item`} value={key} disabled={disabled}>
-            <Checkbox checked={selectedSet.has(key)} size='small' />
+            <Checkbox checked={selectedSet.has(key)} size="small" />
             <ListItemText primary={value} />
           </MenuItem>
         ))}

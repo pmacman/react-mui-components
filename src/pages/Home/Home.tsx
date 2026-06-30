@@ -23,14 +23,14 @@ function Home() {
 
   return (
     <>
-      <Typography variant='h1' component='h1'>
+      <Typography variant="h1" component="h1">
         Custom MUI Components
       </Typography>
 
       <div style={{ width: '50%' }}>
         <LayoutStack>
           <Box>
-            <Typography variant='h2' component='h2'>
+            <Typography variant="h2" component="h2">
               Multi-select list
             </Typography>
 
@@ -44,7 +44,7 @@ function Home() {
             />
           </Box>
           <Box>
-            <Typography variant='h2' component='h2'>
+            <Typography variant="h2" component="h2">
               Progress bar
             </Typography>
 
@@ -52,7 +52,7 @@ function Home() {
             <ProgressBar value={50} label={'50%'} />
           </Box>
           <Box>
-            <Typography variant='h2' component='h2'>
+            <Typography variant="h2" component="h2">
               Progress circle
             </Typography>
 
