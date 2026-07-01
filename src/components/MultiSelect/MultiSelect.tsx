@@ -1,4 +1,4 @@
-import type { SelectOption } from '@/types/SelectOptions';
+import type { SelectOption } from '@/types/form.types';
 import type { SelectChangeEvent, SxProps, Theme } from '@mui/material';
 import {
   Box,

@@ -2,7 +2,7 @@ import { LayoutStack } from '@/components/Layout/LayoutStack';
 import MultiSelect from '@/components/MultiSelect';
 import ProgressBar from '@/components/ProgressBar';
 import ProgressCircle from '@/components/ProgressCircle';
-import type { SelectOption } from '@/types/SelectOptions';
+import type { SelectOption } from '@/types/form.types';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 
