@@ -55,14 +55,17 @@ export const MultiSelect = React.memo(function MultiSelect({
 
   const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
 
-  const handleChange = useCallback((event: SelectChangeEvent<typeof selectedValues>) => {
-    const {
-      target: { value },
-    } = event;
+  const handleChange = useCallback(
+    (event: SelectChangeEvent<typeof selectedValues>) => {
+      const {
+        target: { value },
+      } = event;
 
-    const nextValues = typeof value === 'string' ? value.split(',') : value;
-    onChange(nextValues);
-  }, []);
+      const nextValues = typeof value === 'string' ? value.split(',') : value;
+      onChange(nextValues);
+    },
+    [onChange],
+  );
 
   return (
     <FormControl fullWidth={true} size="small" {...(sx !== undefined && { sx })}>
