@@ -1,7 +1,7 @@
+
 {
   "compilerOptions": {
     /* Build */
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
@@ -9,30 +9,29 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "noEmit": true,
-    "resolveJsonModule": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    /* Environment (Isolated strictly to the Browser) */
+    /* Environment */
     "types": ["vite/client"],
 
-    /* Modern TS / Bundler (Required for noEmit) */
-    "esModuleInterop": true,
+    /* Modules */
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
-    "useDefineForClassFields": true,
+    "resolveJsonModule": true,
+    "erasableSyntaxOnly": true,
+    "noUncheckedSideEffectImports": true,
 
-    /* Strictness (Elite Tier) */
+    /* Type Checking */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
 
     /* Performance */
     "skipLibCheck": true,
 
-    /* Path Aliases (Relative to project root, removing baseUrl friction) */
+    /* Path Aliases */
     "paths": {
       "@/*": ["./src/*"]
     }

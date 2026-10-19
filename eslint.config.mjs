@@ -1,26 +1,29 @@
 import js from '@eslint/js';
-import prettier from 'eslint-config-prettier';
+import prettier from 'eslint-config-prettier/flat';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default [
-  js.configs.recommended,
+export default defineConfig(
+  globalIgnores(['dist/**', 'coverage/**']),
 
-  ...tseslint.configs.recommended,
-
-  // Disable all formatting rules so Prettier wins
-  prettier,
+  // TypeScript application files
   {
+    files: ['src/**/*.{ts,tsx}'],
+    extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.app.json',
-        tsconfigRootDir: __dirname,
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {
-      // examples of GOOD ESLint rules to keep
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn'],
-      '@typescript-eslint/consistent-type-imports': 'error',
-    },
   },
-];
+
+  // JavaScript configuration files
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    extends: [js.configs.recommended],
+  },
+
+  // Disable formatting rules
+  prettier,
+);
